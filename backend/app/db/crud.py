@@ -126,5 +126,5 @@ def get_total_buildings_by_year(db: Session, plz: int = None):
         query = query.group_by(year_, models.Building.plz)
     else:
         query = query.group_by(year_)
-    query = query.order_by(count_.desc())
+    query = query.order_by(year_.asc())
     return [{'year': r[0], 'total': r[1]} for r in query.all()]
