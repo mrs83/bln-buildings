@@ -62,6 +62,10 @@ class BuildingBase(BaseModel):
     typ: str
 
 
-class BuildingCreate(BuildingBase):
+class BuildingOut(BuildingBase):
+    pass
+
+
+class Building(BuildingBase):
     class Config:
         orm_mode = True

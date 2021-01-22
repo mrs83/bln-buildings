@@ -7,7 +7,7 @@ import requests
 import pprint
 from app.db.session import get_db
 from app.db.crud import create_building
-from app.db.schemas import BuildingCreate
+from app.db.schemas import Building
 from app.db.session import SessionLocal
 
 ESRI_DATA_PATH = os.path.join(
@@ -66,7 +66,7 @@ def import_buildings_data(url, update, debug) -> None:
         data = {key.lower(): value.strip() or None for (key, value) in row.items() if key in ESRI_BUILDINGS_FIELDS}
         if debug:
             pprint.pprint(data)
-        create_building(db, BuildingCreate(**data), update)
+        create_building(db, Building(**data), update)
     click.echo("Buildings data imported!")
 
 

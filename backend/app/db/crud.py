@@ -69,9 +69,18 @@ def edit_user(
     return db_user
 
 
-def create_building(db: Session, building: schemas.BuildingCreate, update: bool = False):
+def get_buildings(
+    db: Session, skip: int = 0, limit: int = 100
+) -> t.List[schemas.BuildingOut]:
+    return db.query(models.Building).offset(skip).limit(limit).all()
+
+
+def create_building(db: Session, building: schemas.Building, update: bool = False):
     db_building = db.query(models.Building).filter_by(adressid=building.adressid).one_or_none()
-    if not db_building:
+    if db_building and not update:
+        return db_building
+
+    if not update:
         db_building = models.Building(
             adressid=building.adressid,
             objectid=building.objectid,
@@ -87,12 +96,11 @@ def create_building(db: Session, building: schemas.BuildingCreate, update: bool 
             qualitaet=building.qualitaet,
             typ=building.typ
         )
-
-    if update:
+    else:
         update_data = building.dict(exclude_unset=True)
         for key, value in update_data.items():
             setattr(db_building, key, value)
-
+    
     db.add(db_building)
     db.commit()
     db.refresh(db_building)
