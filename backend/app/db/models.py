@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy import Boolean, Column, Integer, String, Date
 
 from .session import Base
 
@@ -13,3 +13,20 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
     is_superuser = Column(Boolean, default=False)
+
+class Building(Base):
+    __tablename__ = "building"
+
+    adressid = Column(Integer, primary_key=True, index=True)
+    objectid = Column(Integer, index=True)
+    bez_name = Column(String)
+    ort_name = Column(String)
+    plr_name = Column(String)
+    str_name = Column(String)
+    hnr = Column(Integer)
+    plz = Column(Integer, index=True)
+    blk = Column(Integer)
+    adr_datum = Column(Date)
+    str_datum = Column(Date)
+    qualitaet = Column(String)
+    typ = Column(String)

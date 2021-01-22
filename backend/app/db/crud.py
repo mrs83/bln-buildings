@@ -67,3 +67,33 @@ def edit_user(
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+def create_building(db: Session, building: schemas.BuildingCreate, update: bool = False):
+    db_building = db.query(models.Building).filter_by(adressid=building.adressid).one_or_none()
+    if not db_building:
+        db_building = models.Building(
+            adressid=building.adressid,
+            objectid=building.objectid,
+            bez_name=building.bez_name,
+            ort_name=building.ort_name,
+            plr_name=building.plr_name,
+            str_name=building.str_name,
+            hnr=building.hnr,
+            plz=building.plz,
+            blk=building.blk,
+            adr_datum=building.adr_datum,
+            str_datum=building.str_datum,
+            qualitaet=building.qualitaet,
+            typ=building.typ
+        )
+
+    if update:
+        update_data = building.dict(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(db_building, key, value)
+
+    db.add(db_building)
+    db.commit()
+    db.refresh(db_building)
+    return db_building

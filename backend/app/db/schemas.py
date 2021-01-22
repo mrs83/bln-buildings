@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 import typing as t
 
@@ -43,3 +44,24 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     email: str = None
     permissions: str = "user"
+
+
+class BuildingBase(BaseModel):
+    adressid: int
+    objectid: int
+    bez_name: str
+    ort_name: str
+    plr_name: str
+    str_name: str
+    hnr: int
+    plz: int
+    blk: t.Optional[int] = None
+    adr_datum: t.Optional[datetime] = None
+    str_datum: datetime
+    qualitaet: str
+    typ: str
+
+
+class BuildingCreate(BuildingBase):
+    class Config:
+        orm_mode = True
