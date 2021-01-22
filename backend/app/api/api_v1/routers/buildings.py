@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends, Response, encoders
+from fastapi import APIRouter, Depends, Response
 import typing as t
 
 from app.db.session import get_db
@@ -9,7 +9,6 @@ from app.db.crud import (
 )
 from app.db.schemas import (
     Building,
-    BuildingOut,
     BuildingByPlzOut,
     BuildingByYearOut
 )
@@ -36,6 +35,7 @@ async def buildings_list(
     response.headers["Content-Range"] = f"0-9/{len(buildings)}"
     return buildings
 
+
 @r.get(
     "/buildings/by-plz",
     response_model=t.List[BuildingByPlzOut],
@@ -52,6 +52,7 @@ async def total_buildings_by_plz(
     """
     results = get_total_buildings_by_plz(db, plz)
     return results
+
 
 @r.get(
     "/buildings/by-year",

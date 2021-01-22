@@ -101,7 +101,7 @@ def create_building(db: Session, building: schemas.Building, update: bool = Fals
         update_data = building.dict(exclude_unset=True)
         for key, value in update_data.items():
             setattr(db_building, key, value)
-    
+
     db.add(db_building)
     db.commit()
     db.refresh(db_building)

@@ -5,7 +5,6 @@ import click
 import csv
 import requests
 import pprint
-from app.db.session import get_db
 from app.db.crud import create_building
 from app.db.schemas import Building
 from app.db.session import SessionLocal
@@ -37,10 +36,11 @@ ESRI_DATETIME_TO_DATE_FIELDS = (
     'STR_DATUM',
 )
 
+
 def _clean(k, v):
     v = v.strip()
     if v and k in ESRI_DATETIME_TO_DATE_FIELDS:
-         v = v.split('T')[0]
+        v = v.split('T')[0]
     return v or None
 
 
@@ -65,7 +65,7 @@ def import_buildings_data(url, update, debug) -> None:
             decoded_content = download.content.decode('utf-8')
         with open(ESRI_BUILDINGS_FILE, 'w') as f:
             f.write(decoded_content)
-    
+
     if not update:
         click.echo("Importing buildings data...")
     else:
