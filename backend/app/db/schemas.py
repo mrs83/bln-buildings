@@ -69,3 +69,13 @@ class BuildingOut(BuildingBase):
 class Building(BuildingBase):
     class Config:
         orm_mode = True
+
+
+class BuildingByPlzOut(BaseModel):
+    plz: int
+    total: int
+
+
+class BuildingByYearOut(BaseModel):
+    year: int
+    total: int

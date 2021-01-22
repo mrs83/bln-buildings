@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+from sqlalchemy import func, extract
 from sqlalchemy.orm import Session
 import typing as t
 
@@ -105,3 +106,25 @@ def create_building(db: Session, building: schemas.Building, update: bool = Fals
     db.commit()
     db.refresh(db_building)
     return db_building
+
+
+def get_total_buildings_by_plz(db: Session, plz: int = None):
+    count_ = func.count('*').label('total')
+    query = db.query(models.Building.plz, count_)
+    if plz:
+        query = query.filter(models.Building.plz == plz)
+    query = query.group_by(models.Building.plz).order_by(count_.desc())
+    return [{'plz': r[0], 'total': r[1]} for r in query.all()]
+
+
+def get_total_buildings_by_year(db: Session, plz: int = None):
+    count_ = func.count('*').label('total')
+    year_ = extract('year', models.Building.str_datum)
+    query = db.query(year_, count_)
+    if plz:
+        query = query.filter(models.Building.plz == plz)
+        query = query.group_by(year_, models.Building.plz)
+    else:
+        query = query.group_by(year_)
+    query = query.order_by(count_.desc())
+    return [{'year': r[0], 'total': r[1]} for r in query.all()]
