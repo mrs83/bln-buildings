@@ -4,6 +4,8 @@ import uvicorn
 
 from app.api.api_v1.routers.users import users_router
 from app.api.api_v1.routers.auth import auth_router
+from app.api.api_v1.routers.buildings import buildings_router
+
 from app.core import config
 from app.db.session import SessionLocal
 from app.core.auth import get_current_active_user
@@ -34,7 +36,14 @@ app.include_router(
     tags=["users"],
     dependencies=[Depends(get_current_active_user)],
 )
+app.include_router(
+    buildings_router,
+    prefix="/api/v1",
+    tags=["buildings"],
+    # dependencies=[Depends(get_current_active_user)],
+)
 app.include_router(auth_router, prefix="/api", tags=["auth"])
+
 
 if __name__ == "__main__":
     # TODO: reload and workers as env settings.

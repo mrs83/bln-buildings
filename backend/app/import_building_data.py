@@ -32,6 +32,16 @@ ESRI_BUILDINGS_FIELDS = (
     'QUALITAET',
     'TYP',
 )
+ESRI_DATETIME_TO_DATE_FIELDS = (
+    'ADR_DATUM',
+    'STR_DATUM',
+)
+
+def _clean(k, v):
+    v = v.strip()
+    if v and k in ESRI_DATETIME_TO_DATE_FIELDS:
+         v = v.split('T')[0]
+    return v or None
 
 
 @click.command()
@@ -63,7 +73,7 @@ def import_buildings_data(url, update, debug) -> None:
 
     cr = csv.DictReader(decoded_content.splitlines())
     for row in list(cr):
-        data = {key.lower(): value.strip() or None for (key, value) in row.items() if key in ESRI_BUILDINGS_FIELDS}
+        data = {key.lower(): _clean(key, value) for (key, value) in row.items() if key in ESRI_BUILDINGS_FIELDS}
         if debug:
             pprint.pprint(data)
         create_building(db, Building(**data), update)

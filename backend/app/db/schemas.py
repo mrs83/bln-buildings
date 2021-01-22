@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from pydantic import BaseModel
 import typing as t
 
@@ -56,8 +56,8 @@ class BuildingBase(BaseModel):
     hnr: int
     plz: int
     blk: t.Optional[int] = None
-    adr_datum: t.Optional[datetime] = None
-    str_datum: datetime
+    adr_datum: t.Optional[date] = None
+    str_datum: date
     qualitaet: str
     typ: str
 
