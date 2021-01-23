@@ -72,7 +72,7 @@ def import_buildings_data(url, update, debug) -> None:
         click.echo("Updating buildings data...")
 
     cr = csv.DictReader(decoded_content.splitlines())
-    for row in list(cr):
+    for row in cr:
         data = {key.lower(): _clean(key, value) for (key, value) in row.items() if key in ESRI_BUILDINGS_FIELDS}
         if debug:
             pprint.pprint(data)
