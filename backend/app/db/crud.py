@@ -81,7 +81,7 @@ def create_building(db: Session, building: schemas.Building, update: bool = Fals
     if db_building and not update:
         return db_building
 
-    if not update:
+    if not update or db_building is None:
         db_building = models.Building(
             adressid=building.adressid,
             objectid=building.objectid,
