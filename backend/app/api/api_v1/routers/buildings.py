@@ -25,12 +25,14 @@ buildings_router = r = APIRouter()
 async def buildings_list(
     response: Response,
     db=Depends(get_db),
+    skip: t.Optional[int] = 0,
+    limit: t.Optional[int] = 100,
     # current_user=Depends(get_current_active_user),
 ):
     """
     Get all buildings
     """
-    buildings = get_buildings(db)
+    buildings = get_buildings(db, skip, limit)
     # This is necessary for react-admin to work
     response.headers["Content-Range"] = f"0-9/{len(buildings)}"
     return buildings
